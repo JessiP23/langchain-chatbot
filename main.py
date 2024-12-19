@@ -15,3 +15,15 @@ agent_executor = create_react_agent(model, tools, checkpointer=memory)
 
 
 # use the agent
+config = {"configurable": {"thread_id": "abc12345"}}
+for chunk in agent_executor.stream(
+    {"messages": [HumanMessage(content="HI, this is Jessi!, and I live in NY")]}, config
+) :
+    print(chunk)
+    print("---")
+    
+for chunk in agent_executor.stream(
+    {"messages": [HumanMessage(content="Whats the weather where I live?")]}, config
+) :
+    print(chunk)
+    print("---")
