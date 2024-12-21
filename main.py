@@ -5,21 +5,32 @@ from langchain_core.messages import HumanMessage
 from langgraph.checkpoint.memory import MemorySaver
 from langgraph.prebuilt import create_react_agent
 import os
+from langchain_groq import ChatGroq
+
 
 os.environ["TAVILY_API_KEY"] = "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"
+
+os.environ["GROQ_API_KEY"] = "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"
 
 
 # Create the agent
 memory = MemorySaver()
-model = ChatAnthropic(model_name="claude-3-sonnet-20240229")
+model = ChatGroq(
+    model="mixtral-8x7b-32768",
+    temperature=0.8,
+    max_tokens=2048
+)
+
+print("Tavily was instatiated")
+
 search = TavilySearchResults(
-    max_results=3,
+    max_results=4,
     include_answer=True,
     include_raw_content=True,
     include_images=True,
 )
 
-print("Tavily was instatiated")
+
 tools = [search]
 agent_executor = create_react_agent(model, tools, checkpointer=memory)
 
